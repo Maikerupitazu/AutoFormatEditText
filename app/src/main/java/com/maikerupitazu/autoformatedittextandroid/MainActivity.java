@@ -1,4 +1,4 @@
-package com.aldoapps.autoformatedittextandroid;
+package com.maikerupitazu.autoformatedittextandroid;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.aldoapps.autoformatedittext;
+package com.maikerupitazu.autoformatedittext;
 
 import org.junit.Test;
 

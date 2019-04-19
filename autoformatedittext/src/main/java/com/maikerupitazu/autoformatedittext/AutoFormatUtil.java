@@ -1,4 +1,4 @@
-package com.aldoapps.autoformatedittext;
+package com.maikerupitazu.autoformatedittext;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

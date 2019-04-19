@@ -10,28 +10,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.aldoapps.autoformatedittextandroid.MainActivity">
+    tools:context="com.maikerupitazu.autoformatedittextandroid.MainActivity">
 
     <TextView
         android:text="Text below will be auto-formatted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <com.aldoapps.autoformatedittext.AutoFormatEditText
+    <com.maikerupitazu.autoformatedittext.AutoFormatEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isDecimal="true"
         android:hint="Type some money here (decimal)"
         android:layout_marginTop="8dp"/>
 
-    <com.aldoapps.autoformatedittext.AutoFormatEditText
+    <com.maikerupitazu.autoformatedittext.AutoFormatEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isDecimal="false"
         android:hint="Type some money here (no decimal)"
         android:layout_marginTop="8dp"/>
 
-    <com.aldoapps.autoformatedittext.AutoFormatEditText
+    <com.maikerupitazu.autoformatedittext.AutoFormatEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isDecimal="true"
@@ -39,7 +39,7 @@
         android:layout_marginTop="8dp"
         android:maxLength="10"/>
 
-    <com.aldoapps.autoformatedittext.AutoFormatEditText
+    <com.maikerupitazu.autoformatedittext.AutoFormatEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isDecimal="false"
@@ -47,14 +47,14 @@
         android:layout_marginTop="8dp"
         android:maxLength="7"/>
 
-    <com.aldoapps.autoformatedittext.AutoFormatEditText
+    <com.maikerupitazu.autoformatedittext.AutoFormatEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isDecimal="true"
         android:text="1545001.50"
         android:layout_marginTop="8dp"/>
 
-    <com.aldoapps.autoformatedittext.AutoFormatEditText
+    <com.maikerupitazu.autoformatedittext.AutoFormatEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isDecimal="false"

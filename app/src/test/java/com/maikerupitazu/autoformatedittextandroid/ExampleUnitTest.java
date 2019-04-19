@@ -1,4 +1,4 @@
-package com.aldoapps.autoformatedittextandroid;
+package com.maikerupitazu.autoformatedittextandroid;
 
 import org.junit.Test;
 

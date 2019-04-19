@@ -1,4 +1,4 @@
-package com.aldoapps.autoformatedittext;
+package com.maikerupitazu.autoformatedittext;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,10 +9,10 @@ import android.widget.EditText;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import static com.aldoapps.autoformatedittext.AutoFormatUtil.getDecimalSeparator;
-import static com.aldoapps.autoformatedittext.AutoFormatUtil.getDecimalSeparatorString;
-import static com.aldoapps.autoformatedittext.AutoFormatUtil.getGroupingSeparator;
-import static com.aldoapps.autoformatedittext.AutoFormatUtil.getGroupingSeparatorString;
+import static com.maikerupitazu.autoformatedittext.AutoFormatUtil.getDecimalSeparator;
+import static com.maikerupitazu.autoformatedittext.AutoFormatUtil.getDecimalSeparatorString;
+import static com.maikerupitazu.autoformatedittext.AutoFormatUtil.getGroupingSeparator;
+import static com.maikerupitazu.autoformatedittext.AutoFormatUtil.getGroupingSeparatorString;
 
 
 /**
@@ -80,10 +80,10 @@ public class AutoFormatEditText extends EditText {
     private void obtainAttributes(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray typedArrays = getContext()
-                    .obtainStyledAttributes(attrs, com.aldoapps.autoformatedittext.R.styleable.AutoFormatEditText);
+                    .obtainStyledAttributes(attrs, com.maikerupitazu.autoformatedittext.R.styleable.AutoFormatEditText);
 
             try {
-                isDecimal = typedArrays.getBoolean(com.aldoapps.autoformatedittext.R.styleable.AutoFormatEditText_isDecimal, false);
+                isDecimal = typedArrays.getBoolean(com.maikerupitazu.autoformatedittext.R.styleable.AutoFormatEditText_isDecimal, false);
             } finally {
                 typedArrays.recycle();
             }
