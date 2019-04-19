@@ -3,11 +3,17 @@ package com.aldoapps.autoformatedittext;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputFilter;
-import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
+import java.util.Locale;
 import java.util.StringTokenizer;
+
+import static com.aldoapps.autoformatedittext.AutoFormatUtil.getDecimalSeparator;
+import static com.aldoapps.autoformatedittext.AutoFormatUtil.getDecimalSeparatorString;
+import static com.aldoapps.autoformatedittext.AutoFormatUtil.getGroupingSeparator;
+import static com.aldoapps.autoformatedittext.AutoFormatUtil.getGroupingSeparatorString;
+
 
 /**
  * Created by aldo on 21/08/16.
@@ -16,15 +22,13 @@ public class AutoFormatEditText extends EditText {
 
     private static final int MAX_LENGTH = 19;
 
-    private static final int ACTION_DELETE = 0;
-
-    private static final int ACTION_INSERT = 1;
-
     private int prevCommaAmount;
 
     private boolean isFormatting;
 
     private boolean isDecimal;
+
+    private Locale locale = Locale.GERMAN;
 
     public AutoFormatEditText(Context context) {
         super(context);
@@ -41,6 +45,10 @@ public class AutoFormatEditText extends EditText {
         initialize(attrs);
     }
 
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     private void initialize() {
         initialize(null);
     }
@@ -48,18 +56,17 @@ public class AutoFormatEditText extends EditText {
     private void initialize(AttributeSet attrs) {
         setInputFilter(attrs);
         obtainAttributes(attrs);
-        setSoftInputKeyboard();
     }
 
     private void setInputFilter(AttributeSet attrs) {
         int maxLength = MAX_LENGTH;
-        if (attrs != null) {
-            int[] maxLengthAttrs = {android.R.attr.maxLength};
+        if (attrs != null){
+            int[] maxLengthAttrs = { android.R.attr.maxLength };
             TypedArray typedArrays = getContext()
-                .obtainStyledAttributes(attrs, maxLengthAttrs);
-            try {
+                    .obtainStyledAttributes(attrs, maxLengthAttrs);
+            try{
                 maxLength = typedArrays.getInteger(0, MAX_LENGTH);
-            } finally {
+            }finally {
                 typedArrays.recycle();
             }
         }
@@ -73,23 +80,18 @@ public class AutoFormatEditText extends EditText {
     private void obtainAttributes(AttributeSet attrs) {
         if (attrs != null) {
             TypedArray typedArrays = getContext()
-                .obtainStyledAttributes(attrs, R.styleable.AutoFormatEditText);
+                    .obtainStyledAttributes(attrs, com.aldoapps.autoformatedittext.R.styleable.AutoFormatEditText);
 
             try {
-                isDecimal = typedArrays.getBoolean(R.styleable.AutoFormatEditText_isDecimal, false);
+                isDecimal = typedArrays.getBoolean(com.aldoapps.autoformatedittext.R.styleable.AutoFormatEditText_isDecimal, false);
             } finally {
                 typedArrays.recycle();
             }
         }
     }
 
-    private void setSoftInputKeyboard() {
-        setKeyListener(new DigitsKeyListener(false, isDecimal));
-    }
-
     public void updateSoftInputKeyboard(boolean isDecimal) {
         this.isDecimal = isDecimal;
-        setSoftInputKeyboard();
         invalidate();
         requestLayout();
     }
@@ -101,51 +103,43 @@ public class AutoFormatEditText extends EditText {
         }
 
         if (s.length() > 0) {
-            isFormatting = true;
-            formatInput(s.toString(), start, lengthAfter);
+            formatInput(s, start, lengthAfter);
         }
 
         isFormatting = false;
     }
 
+    private void formatInput(CharSequence s, int start, int count) {
+        isFormatting = true;
 
-    /**
-     * This is the main method which makes use of addNum method.
-     *
-     * @param input  an input text.
-     * @param start  start of a text.
-     * @param action delete or insert(0 == Delete and 1 == Insert) text.
-     * @return Nothing.
-     */
-    private void formatInput(String input, int start, int action) {
         StringBuilder sbResult = new StringBuilder();
         String result;
         int newStart = start;
 
         try {
             // Extract value without its comma
-            String digitAndDotText = input.replace(",", "");
+            String digitAndDotText = s.toString().replace(getGroupingSeparatorString(locale), "");
             int commaAmount = 0;
 
             // if user press . turn it into 0.
-            if (input.startsWith(".") && input.length() == 1) {
-                setText("0.");
+            if (s.toString().startsWith(getDecimalSeparatorString(locale)) && s.length() == 1) {
+                setText("0" + getDecimalSeparator(locale));
                 setSelection(getText().toString().length());
                 return;
             }
 
             // if user press . when number already exist turns it into comma
-            if (input.startsWith(".") && input.length() > 1) {
-                StringTokenizer st = new StringTokenizer(input);
-                String afterDot = st.nextToken(".");
-                setText("0." + AutoFormatUtil.extractDigits(afterDot));
+            if (s.toString().startsWith(getDecimalSeparatorString(locale)) && s.length() > 1) {
+                StringTokenizer st = new StringTokenizer(s.toString());
+                String afterDot = st.nextToken(getDecimalSeparatorString(locale));
+                setText("0" + getDecimalSeparator(locale) + AutoFormatUtil.extractDigits(afterDot));
                 setSelection(2);
                 return;
             }
 
-            if (digitAndDotText.contains(".")) {
+            if (digitAndDotText.contains(getDecimalSeparatorString(locale))) {
                 // escape sequence for .
-                String[] wholeText = digitAndDotText.split("\\.");
+                String[] wholeText = digitAndDotText.split(getDecimalSeparatorString(locale));
 
                 if (wholeText.length == 0) {
                     return;
@@ -158,57 +152,52 @@ public class AutoFormatEditText extends EditText {
                 }
 
                 // only format the non-decimal value
-                result = AutoFormatUtil.formatToStringWithoutDecimal(nonDecimal);
+                result = AutoFormatUtil.formatToStringWithoutDecimal(nonDecimal, locale);
 
                 sbResult
-                    .append(result)
-                    .append(".");
+                        .append(result)
+                        .append(getDecimalSeparatorString(locale));
 
                 if (wholeText.length > 1) {
                     sbResult.append(wholeText[1]);
                 }
 
             } else {
-                result = AutoFormatUtil.formatWithDecimal(digitAndDotText);
+                result = AutoFormatUtil.formatWithDecimal(digitAndDotText, locale);
                 sbResult.append(result);
             }
 
-            newStart += ((action == ACTION_DELETE) ? 0 : 1);
+            // count == 0 indicates users is deleting a text
+            // count == 1 indicates users is entering a text
+            newStart += ((count == 0) ? 0 : 1);
 
             // calculate comma amount in edit text
-            commaAmount += AutoFormatUtil.getCommaOccurrence(result);
+            commaAmount += AutoFormatUtil.getCharOccurance(result, getGroupingSeparator(locale));
 
             // flag to mark whether new comma is added / removed
             if (commaAmount >= 1 && prevCommaAmount != commaAmount) {
-                newStart += ((action == ACTION_DELETE) ? -1 : 1);
+                newStart += ((count == 0) ? -1 : 1);
                 prevCommaAmount = commaAmount;
             }
 
             // case when deleting without comma
-            if (commaAmount == 0 && action == ACTION_DELETE && prevCommaAmount != commaAmount) {
+            if (commaAmount == 0 && count == 0 && prevCommaAmount != commaAmount) {
                 newStart -= 1;
                 prevCommaAmount = commaAmount;
             }
 
             // case when deleting without dots
-            if (action == ACTION_DELETE && !sbResult.toString().contains(".")
-                && prevCommaAmount != commaAmount) {
+            if (count == 0 && !sbResult.toString()
+                    .contains(getDecimalSeparatorString(locale)) && prevCommaAmount != commaAmount) {
                 newStart = start;
                 prevCommaAmount = commaAmount;
-            }
-
-            int resultLength = sbResult.toString().length();
-
-            // case when dots become comma and vice versa.
-            if (action == ACTION_INSERT && commaAmount == 0 && sbResult.toString().contains(".")) {
-                newStart = start;
             }
 
             setText(sbResult.toString());
 
             // ensure newStart is within result length
-            if (newStart > resultLength) {
-                newStart = resultLength;
+            if (newStart > sbResult.toString().length()) {
+                newStart = sbResult.toString().length();
             } else if (newStart < 0) {
                 newStart = 0;
             }

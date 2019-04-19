@@ -1,7 +1,9 @@
 package com.aldoapps.autoformatedittext;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by aldo on 21/08/16.
@@ -12,40 +14,56 @@ public class AutoFormatUtil {
 
     private static final String FORMAT_WITH_DECIMAL = "###,###.###";
 
-    private static int getCharOccurrence(String input, char c) {
-        int occurrence = 0;
+    public static int getCharOccurance(String input, char c) {
+        int occurance = 0;
         char[] chars = input.toCharArray();
         for (char thisChar : chars) {
             if (thisChar == c) {
-                occurrence++;
+                occurance++;
             }
         }
-        return occurrence;
-    }
-
-    public static int getCommaOccurrence(String input) {
-        return getCharOccurrence(input, ',');
+        return occurance;
     }
 
     public static String extractDigits(String input) {
         return input.replaceAll("\\D+", "");
     }
 
-    private static String formatToStringWithoutDecimal(double value) {
-        NumberFormat formatter = new DecimalFormat(FORMAT_NO_DECIMAL);
+    public static String formatToStringWithoutDecimal(double value, Locale locale) {
+        NumberFormat formatter = new DecimalFormat(FORMAT_NO_DECIMAL, createFormatSymbols(locale));
         return formatter.format(value);
     }
 
-    static String formatToStringWithoutDecimal(String value) {
-        return formatToStringWithoutDecimal(Double.parseDouble(value));
+    public static String formatToStringWithoutDecimal(String value, Locale locale) {
+        return formatToStringWithoutDecimal(Double.parseDouble(value), locale);
     }
 
-    static String formatWithDecimal(String price) {
-        return formatWithDecimal(Double.parseDouble(price));
+    public static String formatWithDecimal(String price, Locale locale) {
+        return formatWithDecimal(Double.parseDouble(price), locale);
     }
 
-    private static String formatWithDecimal(double price) {
-        NumberFormat formatter = new DecimalFormat(FORMAT_WITH_DECIMAL);
+    public static String formatWithDecimal(double price, Locale locale) {
+        NumberFormat formatter = new DecimalFormat(FORMAT_WITH_DECIMAL, createFormatSymbols(locale));
         return formatter.format(price);
+    }
+
+    private static DecimalFormatSymbols createFormatSymbols(Locale locale) {
+        return new DecimalFormatSymbols(locale);
+    }
+
+    public static char getGroupingSeparator(Locale locale) {
+        return DecimalFormatSymbols.getInstance(locale).getGroupingSeparator();
+    }
+
+    public static char getDecimalSeparator(Locale locale) {
+        return DecimalFormatSymbols.getInstance(locale).getDecimalSeparator();
+    }
+
+    public static String getGroupingSeparatorString(Locale locale) {
+        return String.valueOf(getGroupingSeparator(locale));
+    }
+
+    public static String getDecimalSeparatorString(Locale locale) {
+        return String.valueOf(getDecimalSeparator(locale));
     }
 }
