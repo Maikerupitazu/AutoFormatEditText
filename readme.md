@@ -1,10 +1,5 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-AutoFormatEditText-green.svg?style=true)](https://android-arsenal.com/details/1/4312) <a href="http://www.methodscount.com/?lib=com.aldoapps%3Aautoformatedittext%3A0.9.2"><img src="https://img.shields.io/badge/Methods and size-core: 56 | deps: 16982 | 19 KB-e91e63.svg"/></a> [![License](https://img.shields.io/github/license/pluscubed/recycler-fast-scroll.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-# Not Maintained
-I develop this library years ago and currently developing this library is not a priority. 
-So if there is a bug or future request, you may look at other library or submit a PR.
-Thank you.
-
 # Summary:
 I made this library with single purpose, to auto format number while user type arbitrary number.
 For example:
@@ -19,12 +14,12 @@ While this is easy to achieve using simple format, I find it challenging when yo
 # Usage:
 add this on your app level gradle
 
-```compile 'com.aldoapps:autoformatedittext:0.9.3'```
+```compile 'com.github.Maikerupitazu:AutoFormatEditText:0.2.0'```
 
 # Example
 See sample app to see it in action. It's very simple, just apply AutoFormatEditText like an EditText on your layout
 ```xml
-<com.aldoapps.autoformatedittext.AutoFormatEditText
+<com.maikerupitazu.autoformatedittext.AutoFormatEditText
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
 app:isDecimal="true"
@@ -45,7 +40,7 @@ By default this doesn't support Decimal input, to enable decimal input use ```ap
 
 # License
 ```
-Copyright 2016 Aldo Kelvianto Wachyudi
+Copyright 2016 Michael Peters
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
